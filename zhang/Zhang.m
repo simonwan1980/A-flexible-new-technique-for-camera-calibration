@@ -4,7 +4,7 @@
 % *******          A Flexible New Technique for Camera Calibration            *******
 % ***********************************************************************************
 %                            7/2004    Simon Wan
-%                            //2006-03-04 ÈçÓÐÒÉÎÊ£ºsimonwan1980@gmail.com (ÒòÎªÒÑ´Ó¹þ¹¤´ó±ÏÒµ£¬´ËµØÖ·ÒÑ×÷·Ïsimonwan1980@hit.edu.cn)
+%                            //2006-03-04 å¦‚æœ‰ç–‘é—®ï¼šsimonwan1980@gmail.com (å› ä¸ºå·²ä»Žå“ˆå·¥å¤§æ¯•ä¸šï¼Œæ­¤åœ°å€å·²ä½œåºŸsimonwan1980@hit.edu.cn)
 %
 % Note:    M:2*N  m:2*N
 % M        point on the model plane, when using M=[X,Y]' ---> M=[X,Y,1]'
@@ -20,16 +20,16 @@ function Zhang(M,m)
 
 %  M=[X,Y]' ---> M=[X,Y,1]'  ;   m=[u,v]' ---> m=[u,v,1]' 
     [rows,npts]=size(M);
-    matrixone=ones(1,npts);% 1¾ØÕó
+    matrixone=ones(1,npts);% 1çŸ©é˜µ
     M=[M;matrixone];%%3*256   %  M=[X,Y]' ---> M=[X,Y,1]' 
-    num=size(m,3);%%m¾ØÕó´óÐ¡µÄµÚÈý¸öÔªËØ5
+    num=size(m,3);%%mçŸ©é˜µå¤§å°çš„ç¬¬ä¸‰ä¸ªå…ƒç´ 5
     for i=1:num
         m(3,:,i)=matrixone; %m=[u,v]' ---> m=[u,v,1]' 
     end
 % Estimate the H
  %H=A*[r1,r2,t];
     for i=1:num
-        H(:,:,i)=homography2d1(M,m(:,:,i))';%%%µ÷ÓÃº¯Êýhomography2d1.m
+        H(:,:,i)=homography2d1(M,m(:,:,i))';%%%è°ƒç”¨å‡½æ•°homography2d1.m
     end
 % solve the intrinsic parameters matrix A
 % A=[alpha_u skewness u0
@@ -44,9 +44,9 @@ function Zhang(M,m)
         V=[V;v12(:,:,flag);v11(:,:,flag)-v22(:,:,flag)];
     end
     k=V'*V;      
-    [u,v,d]=svd(k);%ÆæÒìÖµ·Ö½â[u,s,v]=svd(A),Ê¹µÃA=USV'
-    [e,d2]=eig(k);%EigenvectorÌØÕ÷ÏòÁ¿ [V,D]=eig(A)Ê¹µÃ AV=VD£¬DÊÇÌØÕ÷Öµ¶Ô½ÇÕó,VÊÇÌØÕ÷ÏòÁ¿Õó
-    b=d(:,6);%b¾ÍÊÇÂÛÎÄ×÷ÖÐB
+    [u,v,d]=svd(k);%å¥‡å¼‚å€¼åˆ†è§£[u,s,v]=svd(A),ä½¿å¾—A=USV'
+    [e,d2]=eig(k);%Eigenvectorç‰¹å¾å‘é‡ [V,D]=eig(A)ä½¿å¾— AV=VDï¼ŒDæ˜¯ç‰¹å¾å€¼å¯¹è§’é˜µ,Væ˜¯ç‰¹å¾å‘é‡é˜µ
+    b=d(:,6);%bå°±æ˜¯è®ºæ–‡ä½œä¸­B
     v0=(b(2)*b(4)-b(1)*b(5))/(b(1)*b(3)-b(2)^2);
     s=b(6)-(b(4)^2+v0*(b(2)*b(4)-b(1)*b(5)))/b(1);
     alpha_u=sqrt(s/b(1));
@@ -73,10 +73,10 @@ function Zhang(M,m)
         [U,S,V] = svd(RL);
         RL=U*V';
         %%%%%%%%%%%%%%%%%%%%
-        TL=s*inv(A)*H(3,:,flag)';%TLÊÇÎ»ÒÆ¾ØÕót(Íâ²Î)
+        TL=s*inv(A)*H(3,:,flag)';%TLæ˜¯ä½ç§»çŸ©é˜µt(å¤–å‚)
         RT=[rl1,rl2,TL];%H=A[r1 r2 t]
-        XY=RT*M;%MÊÇmodel plane µãµÄ×ø±ê
-        UV=A*XY;%sm=A[R t]M,UVÊÇµÈÊ½µÄÓÒ±ß
+        XY=RT*M;%Mæ˜¯model plane ç‚¹çš„åæ ‡
+        UV=A*XY;%sm=A[R t]M,UVæ˜¯ç­‰å¼çš„å³è¾¹
         UV=[UV(1,:)./UV(3,:); UV(2,:)./UV(3,:); UV(3,:)./UV(3,:)];
         XY=[XY(1,:)./XY(3,:); XY(2,:)./XY(3,:); XY(3,:)./XY(3,:)];
         for j=1:npts
@@ -87,7 +87,7 @@ function Zhang(M,m)
         r12=RL(1,2);
         r23=RL(2,3);
         Q1=-asin(r13);
-        Q2=asin(r12/cos(Q1));%asin¾ÍÊÇarcsin
+        Q2=asin(r12/cos(Q1));%asinå°±æ˜¯arcsin
         Q3=asin(r23/cos(Q1));
         [cos(Q2)*cos(Q1)   sin(Q2)*cos(Q1)   -sin(Q1) ; -sin(Q2)*cos(Q3)+cos(Q2)*sin(Q1)*sin(Q3)    cos(Q2)*cos(Q3)+sin(Q2)*sin(Q1)*sin(Q3)  cos(Q1)*sin(Q3) ; sin(Q2)*sin(Q3)+cos(Q2)*sin(Q1)*cos(Q3)    -cos(Q2)*sin(Q3)+sin(Q2)*sin(Q1)*cos(Q3)  cos(Q1)*cos(Q3)];
         R_new=[Q1,Q2,Q3,TL'];
@@ -98,8 +98,9 @@ function Zhang(M,m)
 % Complete Maximun Likelihood Estimation, using function (14), P8
     para=[Rm,k(1),k(2),alpha_u,skewness,u0,alpha_v,v0];
     % optimset Create/alter OPTIM OPTIONS structure.
-    options = optimset('LargeScale','off','LevenbergMarquardt','on');
-    %lsqnonlin :Solves non-linear least squares problems.×îÐ¡¶þ³Ë·¨ÎÊÌâ
+    % options = optimset('LargeScale','off','LevenbergMarquardt','on');
+    options.Algorithm = 'levenberg-marquardt';
+    %lsqnonlin :Solves non-linear least squares problems.æœ€å°äºŒä¹˜æ³•é—®é¢˜
          %     Examples
          %    FUN can be specified using @:
          %    x = lsqnonlin(@myfun,[2 3 4])
