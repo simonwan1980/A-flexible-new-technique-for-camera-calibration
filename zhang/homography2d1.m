@@ -3,7 +3,7 @@
 % *******          A Flexible New Technique for Camera Calibration            *******
 % ***********************************************************************************
 %                            7/2004    Simon Wan
-%                            //2006-03-04 ÈçÓĞÒÉÎÊ£ºsimonwan1980@gmail.com (ÒòÎªÒÑ´Ó¹ş¹¤´ó±ÏÒµ£¬´ËµØÖ·ÒÑ×÷·Ïsimonwan1980@hit.edu.cn)
+%                            //2006-03-04 å¦‚æœ‰ç–‘é—®ï¼šsimonwan1980@gmail.com (å› ä¸ºå·²ä»å“ˆå·¥å¤§æ¯•ä¸šï¼Œæ­¤åœ°å€å·²ä½œåºŸsimonwan1980@hit.edu.cn)
 %
 % REF:	   "A Flexible New Technique for Camera Calibration"
 %           - Zhengyou Zhang 
@@ -28,7 +28,7 @@
 % Computer Vision" p92.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ±¾×Ó³ÌĞòÀ´Ô´ÓÚÏÂ£º
+% æœ¬å­ç¨‹åºæ¥æºäºä¸‹ï¼š
 % Peter Kovesi
 % School of Computer Science & Software Engineering
 % The University of Western Australia
@@ -40,24 +40,24 @@
 %H=A*[r1,r2,t];
 function H = homography2d(varargin)
     
-    [x1, x2] = checkargs(varargin(:));% varargin"±ä³¤¶ÈÊäÈë×ÚÁ¿ÁĞ±í"varargin±¾ÉíÊÇ¸öÔª°ûÊı×é
-    M=x1;                             % varargout"±ä³¤¶ÈÊä³ö×ÚÁ¿ÁĞ±í"
+    [x1, x2] = checkargs(varargin(:));% varargin"å˜é•¿åº¦è¾“å…¥å®—é‡åˆ—è¡¨"vararginæœ¬èº«æ˜¯ä¸ªå…ƒèƒæ•°ç»„
+    M=x1;                             % varargout"å˜é•¿åº¦è¾“å‡ºå®—é‡åˆ—è¡¨"
     m=x2;
-    % Attempt to normalise£¨ ¹æ¸ñ»¯£©each set of points so that the origin 
-    % is at centroid £¨ÖÊĞÄ£©and mean distance from origin is sqrt(2).£¨ÒòÎªÊÇÕı·½ĞÎ£©
+    % Attempt to normaliseï¼ˆ è§„æ ¼åŒ–ï¼‰each set of points so that the origin 
+    % is at centroid ï¼ˆè´¨å¿ƒï¼‰and mean distance from origin is sqrt(2).ï¼ˆå› ä¸ºæ˜¯æ­£æ–¹å½¢ï¼‰
     [x1, T1] = normalise2dpts(x1);
     [x2, T2] = normalise2dpts(x2);
     
     % Note that it may have not been possible to normalise
     % the points if one was at infinity so the following does not
     % assume that scale parameter w = 1.
-    % Estimation of the H between the model plane and its image, P18½¨Á¢µ¥Ó¦ĞÔ¾ØÕó
+    % Estimation of the H between the model plane and its image, P18å»ºç«‹å•åº”æ€§çŸ©é˜µ
     Npts = length(x1);
-    A = zeros(3*Npts,9);%AÎª³¬¶¨·½³Ì
+    A = zeros(3*Npts,9);%Aä¸ºè¶…å®šæ–¹ç¨‹
     
     O = [0 0 0];
     for n = 1:Npts
-	X = x1(:,n)';%¶¨Òå 
+	X = x1(:,n)';%å®šä¹‰ 
 	x = x2(1,n);y = x2(2,n); w = x2(3,n);
 	A(3*n-2,:) = [  O  -w*X  y*X];
 	A(3*n-1,:) = [ w*X   O  -x*X];
@@ -66,16 +66,17 @@ function H = homography2d(varargin)
     
     [U,D,V] = svd(A);
     % Ax=b  x=A\b;
-    % Extract homographyµ¥Ó¦ĞÔ¾ØÕó
+    % Extract homographyå•åº”æ€§çŸ©é˜µ
     H1 = reshape(V(:,9),3,3)'
            
-    % Denormalize·´Ïò¹æ¸ñ»¯,
+    % Denormalizeåå‘è§„æ ¼åŒ–,
     H2= T2\H1*T1;
     H=H2/H2(3,3);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Maximun likelihood estimation for the H×î´óËÆÈ»¹À¼Æ
+    % Maximun likelihood estimation for the Hæœ€å¤§ä¼¼ç„¶ä¼°è®¡
     % using the function(10), P7
-    options = optimset('LargeScale','off','LevenbergMarquardt','on');
+    % options = optimset('LargeScale','off','LevenbergMarquardt','on');
+    options.Algorithm = 'levenberg-marquardt';
     [x,resnorm,residual,exitflag,output]  = lsqnonlin( @simon_H, reshape(H,1,9) , [],[],options,m, M);
     H=reshape(x,3,3);
     H=H/H(3,3);
