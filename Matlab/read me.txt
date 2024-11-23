@@ -1,0 +1,9 @@
+zhang是主程序
+请参考test以了解调用的方法
+zhang，zhengyou在他自己的网站上提供了一个叫Easycalib的程序用以计算
+完成他论文中提到的算法，但没有提供源代码。大家可以用他的程序计算后
+再用我的程序计算以比较二者的结果。
+//2006-03-04 如有疑问：simonwan1980@gmail.com (因为已从哈工大毕业，此地址已作废simonwan1980@hit.edu.cn)
+注：张正友的模板平面（model plane）中，是以左上角为坐标原点，向右向上为正；
+   各个图像平面(image plane)中，是以左下角为象素坐标原点向上向右为正
+  Note by WangZhong ,SouthEast University,NanJing,Nov,2004

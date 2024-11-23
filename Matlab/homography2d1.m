@@ -57,11 +57,13 @@ function H = homography2d(varargin)
     
     O = [0 0 0];
     for n = 1:Npts
-	X = x1(:,n)';%定义 
-	x = x2(1,n);y = x2(2,n); w = x2(3,n);
-	A(3*n-2,:) = [  O  -w*X  y*X];
-	A(3*n-1,:) = [ w*X   O  -x*X];
-	A(3*n  ,:) = [-y*X  x*X   O ];
+        X = x1(:,n)';
+        x = x2(1,n);
+        y = x2(2,n); 
+        w = x2(3,n);
+        A(3*n-2,:) = [  O  -w*X  y*X];
+        A(3*n-1,:) = [ w*X   O  -x*X];
+        A(3*n  ,:) = [-y*X  x*X   O ];
     end
     
     [U,D,V] = svd(A);

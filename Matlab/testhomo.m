@@ -12,9 +12,9 @@ mm(:,:,1)=m1';
 mm(:,:,2)=m2';
 mm(:,:,3)=m3';
 
-[rows,npts]=size(M1');%npts ÎªÁĞÊı
-    matrixone=ones(1,npts);% 1¾ØÕó
-    M2=[M1';matrixone];%Ôö¼ÓÒ»ĞĞ 1 1
+[rows,npts]=size(M1');%npts ä¸ºåˆ—æ•°
+    matrixone=ones(1,npts);% 1çŸ©é˜µ
+    M2=[M1';matrixone];%å¢åŠ ä¸€è¡Œ 1 1
     num=size(mm,3)
     for i=1:num
         mm(3,:,i)=matrixone; 
@@ -27,7 +27,7 @@ Npts = length(x1);
     
     O = [0 0 0];
     for n = 1:Npts
-	X = x1(:,n)';%¶¨Òå 
+	X = x1(:,n)';%å®šä¹‰ 
 	x = x2(1,n); y = x2(2,n); w = x2(3,n);
 	A(3*n-2,:) = [  O  -w*X  y*X];
 	A(3*n-1,:) = [ w*X   O  -x*X];
@@ -36,11 +36,11 @@ Npts = length(x1);
     
     [U,D,V] = svd(A)
     % Ax=b  x=A\b;
-    % Extract homographyµ¥Ó¦ĞÔ¾ØÕó
+    % Extract homographyå•åº”æ€§çŸ©é˜µ
     H = reshape(V(:,9),3,3)';
     H=H/H(3,3);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Maximun likelihood estimation for the H×î´óËÆÈ»¹À¼Æ
+    % Maximun likelihood estimation for the Hæœ€å¤§ä¼¼ç„¶ä¼°è®¡
     % using the function(10), P7
     %options = optimset('LargeScale','off','LevenbergMarquardt','on');
     %[x,resnorm,residual,exitflag,output]  = lsqnonlin( @simon_H, reshape(H,1,9) , [],[],options,mm, M2);
@@ -53,9 +53,9 @@ Npts = length(x1);
         V=[V;v12(:,:);v11(:,:)-v22(:,:)]
     
     k=V'*V;       
-    [u,v,d]=svd(k);%ÆæÒìÖµ·Ö½â[u,s,v]=svd(A),Ê¹µÃA=USV'
-    [e,d2]=eig(k);%EigenvectorÌØÕ÷ÏòÁ¿ [V,D]=eig(A)Ê¹µÃ AV=VD£¬DÊÇÌØÕ÷Öµ¶Ô½ÇÕó,VÊÇÌØÕ÷ÏòÁ¿Õó
-    b=d(:,6);%b¾ÍÊÇÂÛÎÄ×÷ÖĞB
+    [u,v,d]=svd(k);%å¥‡å¼‚å€¼åˆ†è§£[u,s,v]=svd(A),ä½¿å¾—A=USV'
+    [e,d2]=eig(k);%Eigenvectorç‰¹å¾å‘é‡ [V,D]=eig(A)ä½¿å¾— AV=VDï¼ŒDæ˜¯ç‰¹å¾å€¼å¯¹è§’é˜µ,Væ˜¯ç‰¹å¾å‘é‡é˜µ
+    b=d(:,6);%bå°±æ˜¯è®ºæ–‡ä½œä¸­B
     v0=(b(2)*b(4)-b(1)*b(5))/(b(1)*b(3)-b(2)^2);
     s=b(6)-(b(4)^2+v0*(b(2)*b(4)-b(1)*b(5)))/b(1);
     alpha_u=sqrt(s/b(1));
